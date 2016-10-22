@@ -30,7 +30,20 @@ namespace IdentityServerWithAspNetIdentity
         {
             return new List<Client>
             {
+                // other clients omitted...
+
                 // resource owner password grant client
+                new Client
+                {
+                    ClientId = "ro.client",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    AllowedScopes = { "api1" }
+                },
                 new Client
                 {
                     ClientId = "client",
@@ -42,22 +55,6 @@ namespace IdentityServerWithAspNetIdentity
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
-                    },
-
-                    // scopes that client has access to
-                    AllowedScopes = { "api1" }
-                },
-                new Client
-                {
-                    ClientId = "mario",
-
-                    // no interactive user, use the clientid/secret for authentication
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                    // secret for authentication
-                    ClientSecrets =
-                    {
-                        new Secret("mariopass".Sha256())
                     },
 
                     // scopes that client has access to

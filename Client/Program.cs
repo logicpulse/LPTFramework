@@ -12,23 +12,13 @@ namespace Client
     {
         public static void Main(string[] args) => MainAsync().GetAwaiter().GetResult();
 
-        private static async Task MainAsync() { 
+        private static async Task MainAsync() {
 
-            // discover endpoints from metadata
-            var disco = await DiscoveryClient.GetAsync("http://localhost:5000");
+            //Requesting a token using client credentials grant
+            TokenResponse tokenResponse = await TestClientCredentialsGrant();
 
-            // request token
-            var tokenClient = new TokenClient(disco.TokenEndpoint, "client", "secret");
-            var tokenResponse = await tokenClient.RequestClientCredentialsAsync("api1");
-
-            if (tokenResponse.IsError)
-            {
-                Console.WriteLine(tokenResponse.Error);
-                PressAnyKey();
-                return;
-            }
-
-            Console.WriteLine(tokenResponse.Json);
+            //Requesting a token using the password grant
+            //TokenResponse tokenResponse = await TestRequestingTokenPasswordGrant();
 
             // call api
             var client = new HttpClient();
@@ -43,13 +33,57 @@ namespace Client
 
             var content = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine(JArray.Parse(content));
+
             PressAnyKey();
-                
+        }
+
+        //Requesting a token using client credentials grant
+        private static async Task<TokenResponse> TestClientCredentialsGrant()
+        {
+            // discover endpoints from metadata
+            var disco = await DiscoveryClient.GetAsync("http://localhost:5000");
+
+            // request token
+            var tokenClient = new TokenClient(disco.TokenEndpoint, "client", "secret");
+            var tokenResponse = await tokenClient.RequestClientCredentialsAsync("api1");
+
+            if (tokenResponse.IsError)
+            {
+                Console.WriteLine(tokenResponse.Error);
+                PressAnyKey();
+                return null;
+            }
+
+            Console.WriteLine(tokenResponse.Json);
+
+            return tokenResponse;
+        }
+
+        //Requesting a token using the password grant
+        private static async Task<TokenResponse> TestRequestingTokenPasswordGrant()
+        {
+            // discover endpoints from metadata
+            var disco = await DiscoveryClient.GetAsync("http://localhost:5000");
+
+            //Requesting a token using the password grant
+            // request token
+            var tokenClient = new TokenClient(disco.TokenEndpoint, "ro.client", "secret");
+            var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync("alice", "password", "api1");
+
+            if (tokenResponse.IsError)
+            {
+                Console.WriteLine(tokenResponse.Error);
+                return null;
+            }
+
+            Console.WriteLine(tokenResponse.Json);
+
+            return tokenResponse;
         }
 
         private static void PressAnyKey()
         {
-            Console.WriteLine("Pressa any key...");
+            Console.WriteLine("Press any key...");
             Console.ReadKey();
         }
     }
