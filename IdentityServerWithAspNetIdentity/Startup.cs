@@ -23,6 +23,7 @@ namespace IdentityServerWithAspNetIdentity
             //Configure identity server with in-memory stores, keys, clients and scopes
                 .AddInMemoryScopes(Config.GetScopes())
                 .AddInMemoryClients(Config.GetClients())
+                .AddInMemoryUsers(Config.GetUsers());
             ;
         }
 
