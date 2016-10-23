@@ -16,6 +16,9 @@ namespace IdentityServerWithAspNetIdentity
         {
             return new List<Scope>
             {
+               StandardScopes.OpenId,
+                StandardScopes.Profile,
+
                 new Scope
                 {
                     Name = "api1",
@@ -30,20 +33,6 @@ namespace IdentityServerWithAspNetIdentity
         {
             return new List<Client>
             {
-                // other clients omitted...
-
-                // resource owner password grant client
-                new Client
-                {
-                    ClientId = "ro.client",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-                    AllowedScopes = { "api1" }
-                },
                 new Client
                 {
                     ClientId = "client",
@@ -59,6 +48,37 @@ namespace IdentityServerWithAspNetIdentity
 
                     // scopes that client has access to
                     AllowedScopes = { "api1" }
+                },
+                // resource owner password grant client
+                new Client
+                {
+                    ClientId = "ro.client",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    AllowedScopes = { "api1" }
+                },
+                // OpenID Connect implicit flow client (MVC)
+                new Client
+                {
+                    ClientId = "mvc",
+                    ClientName = "MVC Client",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+
+                    // where to redirect to after login
+                    RedirectUris = { "http://localhost:5002/signin-oidc" },
+
+                    // where to redirect to after logout
+                    PostLogoutRedirectUris = { "http://localhost:5002" },
+
+                    AllowedScopes = new List<string>
+                    {
+                        StandardScopes.OpenId.Name,
+                        StandardScopes.Profile.Name
+                    }
                 }
             };
         }

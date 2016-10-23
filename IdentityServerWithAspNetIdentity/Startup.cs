@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using IdentityServer4;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace IdentityServerWithAspNetIdentity
 {
@@ -16,6 +18,8 @@ namespace IdentityServerWithAspNetIdentity
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+
             //Add UseIdentityServer IdentityServer to the DI system
             //AddDeveloperIdentityServer is a convenient way to quickly setup IdentityServer with in-memory keys and data stores. 
             //This is only useful for development and test scenarios.
@@ -39,6 +43,10 @@ namespace IdentityServerWithAspNetIdentity
 
             //Add UseIdentityServer Middleware to the HTTP pipeline
             app.UseIdentityServer();
+
+            //Add MVC and static files to your pipeline:
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
 
             app.Run(async (context) =>
             {
