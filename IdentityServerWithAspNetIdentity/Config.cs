@@ -1,9 +1,7 @@
 ﻿using IdentityServer4.Models;
 using IdentityServer4.Services.InMemory;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace IdentityServerWithAspNetIdentity
 {
@@ -93,13 +91,24 @@ namespace IdentityServerWithAspNetIdentity
                 {
                     Subject = "1",
                     Username = "alice",
-                    Password = "password"
+                    Password = "password",
+
+                    Claims = new []
+                    {
+                        new Claim("name", "Alice"),
+                        new Claim("website", "https://alice.com")
+                    }
                 },
                 new InMemoryUser
                 {
                     Subject = "2",
                     Username = "bob",
-                    Password = "password"
+                    Password = "password",
+                    Claims = new []
+                    {
+                        new Claim("name", "Bob"),
+                        new Claim("website", "https://bob.com")
+                    }
                 }
             };
         }

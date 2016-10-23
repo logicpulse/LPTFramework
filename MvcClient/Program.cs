@@ -11,6 +11,8 @@ namespace MvcClient
     {
         public static void Main(string[] args)
         {
+            Console.Title = "MvcClient";
+
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseUrls("http://localhost:5002")
