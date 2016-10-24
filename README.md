@@ -1,2 +1,1 @@
 - Setup [identityserver4](http://identityserver4.readthedocs.io/en/dev/quickstarts/0_overview.html)
-- Blog [Post](http://blog.koakh.com/backend/rainlab/blog/posts/update/242) Notes

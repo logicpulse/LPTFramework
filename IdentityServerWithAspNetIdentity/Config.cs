@@ -92,7 +92,6 @@ namespace IdentityServerWithAspNetIdentity
                     Subject = "1",
                     Username = "alice",
                     Password = "password",
-
                     Claims = new []
                     {
                         new Claim("name", "Alice"),
