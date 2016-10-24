@@ -59,12 +59,17 @@ namespace IdentityServerWithAspNetIdentity
                     },
                     AllowedScopes = { "api1" }
                 },
-                // OpenID Connect implicit flow client (MVC)
+                // OpenID Connect Hybrid Flow client (MVC)
                 new Client
                 {
                     ClientId = "mvc",
                     ClientName = "MVC Client",
-                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
 
                     // where to redirect to after login
                     RedirectUris = { "http://localhost:5002/signin-oidc" },
@@ -75,7 +80,9 @@ namespace IdentityServerWithAspNetIdentity
                     AllowedScopes = new List<string>
                     {
                         StandardScopes.OpenId.Name,
-                        StandardScopes.Profile.Name
+                        StandardScopes.Profile.Name,
+                        StandardScopes.OfflineAccess.Name,
+                        "api1"
                     }
                 }
             };
@@ -95,7 +102,8 @@ namespace IdentityServerWithAspNetIdentity
                     Claims = new []
                     {
                         new Claim("name", "Alice"),
-                        new Claim("website", "https://alice.com")
+                        new Claim("website", "https://alice.com"),
+                        new Claim("tenant", "acme")
                     }
                 },
                 new InMemoryUser
@@ -106,7 +114,8 @@ namespace IdentityServerWithAspNetIdentity
                     Claims = new []
                     {
                         new Claim("name", "Bob"),
-                        new Claim("website", "https://bob.com")
+                        new Claim("website", "https://bob.com"),
+                        new Claim("tenant", "logicpulse")
                     }
                 }
             };

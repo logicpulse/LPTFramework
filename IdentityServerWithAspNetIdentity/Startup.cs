@@ -44,14 +44,33 @@ namespace IdentityServerWithAspNetIdentity
             //Add UseIdentityServer Middleware to the HTTP pipeline
             app.UseIdentityServer();
 
+            // Add cookie middleware ( used to temporarily store the outcome of the external authentication in a temporary cookie)
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme,
+
+                AutomaticAuthenticate = false,
+                AutomaticChallenge = false
+            });
+
+            // Add Google middleware
+            app.UseGoogleAuthentication(new GoogleOptions
+            {
+                AuthenticationScheme = "Google",
+                DisplayName = "Google",
+                SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme,
+
+                // Tutorial Config
+                //ClientId = "434483408261-55tc8n0cs4ff1fe21ea8df2o443v2iuc.apps.googleusercontent.com";
+                //ClientSecret = "3gcoTrEDPPJ0ukn_aYYT6PWo";
+                // Mario
+                ClientId = "1028694897664-gn06cqserfckbusa4lu3o76jlmvmhmso.apps.googleusercontent.com",
+                ClientSecret = "ovh_8DMUKvD6eUWjUm6an1UF"
+            });
+
             //Add MVC and static files to your pipeline:
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
-
-            //app.Run(async (context) =>
-            //{
-            //  await context.Response.WriteAsync("Hello World!");
-            //});
         }
     }
 }
