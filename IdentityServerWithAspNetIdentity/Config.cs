@@ -14,12 +14,14 @@ namespace IdentityServerWithAspNetIdentity
         {
             return new List<Scope>
             {
-               StandardScopes.OpenId,
+                StandardScopes.OpenId,
                 StandardScopes.Profile,
+                StandardScopes.OfflineAccess,
 
                 new Scope
                 {
                     Name = "api1",
+                    DisplayName = "API1 access",
                     Description = "My API"
                 }
             };

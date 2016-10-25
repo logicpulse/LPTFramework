@@ -83,6 +83,7 @@ namespace MvcClient
 
                 GetClaimsFromUserInfoEndpoint = true,
 
+                //Using That’s what the SaveTokens: OpenID Connect middleware saves the tokens(identity, access and refresh in our case) automatically for you.
                 SaveTokens = true
             });
 
